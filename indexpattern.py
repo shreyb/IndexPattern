@@ -15,7 +15,6 @@ def dateparse(date):
     return dateret
 
 
-
 def indexpattern_generate(start,end):
     """Function to return the proper index pattern for queries to elasticsearch on gracc.opensciencegrid.org.  This improves performance by not just using a general index pattern unless absolutely necessary.
     This will especially help with reports, for example.i
@@ -23,33 +22,21 @@ def indexpattern_generate(start,end):
     This function assumes that the date being passed in has been split into a list with [yyyy,mm,dd] format.  This gets tested.
 
     """ 
-    
     startdate = dateparse(start)
     enddate = dateparse(end)
         
-    
     basepattern='gracc.osg.raw-'
     
-    if startdate[0]==enddate[0]:
-    #    print "same year"
+    if startdate[0]==enddate[0]:                        #Check if year is the same
         basepattern+='{}.'.format(str(startdate[0]))
-    #    print basepattern
-    #if startdate[0]==enddate[0]:
-    #    basepattern+=str(startdate[0])
-    #    basepattern+='.'
-        if startdate[1]==enddate[1]:
-     #       print "same month"
-            if len(str(startdate[1]))==1:
-                add = '0'+str(startdate[1])
+        if startdate[1]==enddate[1]:                    #Check if month is the same
+            if len(str(startdate[1]))==1:               #Add leading zero if necessary
+                add = '0{}'.format(str(startdate[1]))
             else:
                 add = str(startdate[1])
-      #      print basepattern
-            basepattern+=add
-            basepattern+='.'
-       #     print basepattern
+            basepattern+='{}.'.format(add)
     
     basepattern+='*'
-#    print basepattern
     return basepattern
 
 
