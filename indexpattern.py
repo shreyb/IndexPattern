@@ -31,17 +31,25 @@ def indexpattern_generate(start,end):
     basepattern='gracc.osg.raw-'
     
     if startdate[0]==enddate[0]:
-        basepattern+=str(startdate[0])
-        basepattern+='.'
-    if startdate[1]==enddate[1]:
-        if len(str(startdate[1]))==1:
-            add = '0'+str(startdate[1])
-        else:
-            add = str(startdate[1])
-        basepattern+=add
-        basepattern+='.'
+    #    print "same year"
+        basepattern+='{}.'.format(str(startdate[0]))
+    #    print basepattern
+    #if startdate[0]==enddate[0]:
+    #    basepattern+=str(startdate[0])
+    #    basepattern+='.'
+        if startdate[1]==enddate[1]:
+     #       print "same month"
+            if len(str(startdate[1]))==1:
+                add = '0'+str(startdate[1])
+            else:
+                add = str(startdate[1])
+      #      print basepattern
+            basepattern+=add
+            basepattern+='.'
+       #     print basepattern
     
     basepattern+='*'
+#    print basepattern
     return basepattern
 
 
@@ -55,17 +63,17 @@ if __name__=="__main__":
     date_dateend = datetime.date(2016,06,12)
     date_datestart1 = datetime.date(2016,06,10)
     date_datestart2 = datetime.date(2016,5,10)
-    date_datestart3 = datetime.date(2015,06,10)
+    date_datestart3 = datetime.date(2015,05,10)
 
     datebreak = '2016/06/10'
 
-    print indexpattern_generate(date_start1,date_end)   #Should be gracc...2016.06.*
-    print indexpattern_generate(date_start2,date_end)   #Should be gracc...2016.*
-    print indexpattern_generate(date_start3,date_end)   #Should be gracc.osg.raw-*
+    print indexpattern_generate(date_start1,date_end), 'Should be gracc...2016.06.*'
+    print indexpattern_generate(date_start2,date_end), 'Should be gracc...2016.*'
+    print indexpattern_generate(date_start3,date_end), 'Should be gracc.osg.raw-*'
 
-    print indexpattern_generate(date_datestart1,date_dateend)
-    print indexpattern_generate(date_datestart2,date_dateend)
-    print indexpattern_generate(date_datestart3,date_dateend)
+    print indexpattern_generate(date_datestart1,date_dateend),'Should be gracc...2016.06.*'
+    print indexpattern_generate(date_datestart2,date_dateend), 'Should be gracc...2016.*'
+    print indexpattern_generate(date_datestart3,date_dateend), 'Should be gracc.osg.raw-*'
 
     print "This next test should fail with a TypeError."
     print indexpattern_generate(datebreak,date_dateend)
