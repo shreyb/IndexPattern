@@ -25,7 +25,7 @@ def indexpattern_generate(start,end):
     startdate = dateparse(start)
     enddate = dateparse(end)
         
-    basepattern='gracc.osg.raw-'
+    basepattern='gracc.osg.query-'
     
     if startdate[0]==enddate[0]:                        #Check if year is the same
         basepattern+='{}.'.format(str(startdate[0]))
@@ -34,9 +34,12 @@ def indexpattern_generate(start,end):
                 add = '0{}'.format(str(startdate[1]))
             else:
                 add = str(startdate[1])
-            basepattern+='{}.'.format(add)
-    
-    basepattern+='*'
+            basepattern+='{}'.format(add)
+        else:
+            basepattern+='*'
+    else:
+        basepattern+='*'
+
     return basepattern
 
 
@@ -54,13 +57,15 @@ if __name__=="__main__":
 
     datebreak = '2016/06/10'
 
-    print indexpattern_generate(date_start1,date_end), 'Should be gracc...2016.06.*'
-    print indexpattern_generate(date_start2,date_end), 'Should be gracc...2016.*'
-    print indexpattern_generate(date_start3,date_end), 'Should be gracc.osg.raw-*'
+# gracc.osg.query-YYYY.MM
 
-    print indexpattern_generate(date_datestart1,date_dateend),'Should be gracc...2016.06.*'
-    print indexpattern_generate(date_datestart2,date_dateend), 'Should be gracc...2016.*'
-    print indexpattern_generate(date_datestart3,date_dateend), 'Should be gracc.osg.raw-*'
+    print indexpattern_generate(date_start1,date_end), 'Should be gracc.osg.query-2016.06'
+    print indexpattern_generate(date_start2,date_end), 'Should be gracc.osg.query-2016.*'
+    print indexpattern_generate(date_start3,date_end), 'Should be gracc.osg.query-*'
+
+    print indexpattern_generate(date_datestart1,date_dateend), 'Should be gracc.osg.query-2016.06'
+    print indexpattern_generate(date_datestart2,date_dateend), 'Should be gracc.osg.query-2016.*'
+    print indexpattern_generate(date_datestart3,date_dateend), 'Should be gracc.osg.query-*'
 
     print "This next test should fail with a TypeError."
     print indexpattern_generate(datebreak,date_dateend)
