@@ -41,6 +41,7 @@ def indexpattern_generate(start,end):
             basepattern+='*'
     else:
         basepattern+='*'
+    
 
     return basepattern
 
@@ -64,16 +65,17 @@ if __name__=="__main__":
     
 # gracc.osg.query-YYYY.MM
 
-    print indexpattern_generate(date_start1,date_end), 'Should be gracc.osg.query-2016.06'
-    print indexpattern_generate(date_start2,date_end), 'Should be gracc.osg.query-2016.*'
-    print indexpattern_generate(date_start3,date_end), 'Should be gracc.osg.query-*'
-
-    print indexpattern_generate(date_datestart1,date_dateend), 'Should be gracc.osg.query-2016.06'
-    print indexpattern_generate(date_datestart2,date_dateend), 'Should be gracc.osg.query-2016.*'
-    print indexpattern_generate(date_datestart3,date_dateend), 'Should be gracc.osg.query-*'
-
-    print indexpattern_generate(datestringslash,date_dateend), 'Should be gracc.osg.query-2016.06'
-    print indexpattern_generate(datestringdash,date_dateend), 'Should be gracc.osg.query-2016.06'
+    
+    assert indexpattern_generate(date_start1,date_end) == 'gracc.osg.query-2016.06', "Assertion Error, {}-{} test failed".format(date_start1, date_end)
+    assert indexpattern_generate(date_start2,date_end) == 'gracc.osg.query-2016.*', "Assertion Error, {}-{} test failed".format(date_start2, date_end)
+    assert indexpattern_generate(date_start3,date_end) == 'gracc.osg.query-*', "Assertion Error, {}-{} test failed".format(date_start3, date_end)
+    
+    assert indexpattern_generate(date_datestart1,date_dateend) == 'gracc.osg.query-2016.06', "Assertion Error, {}-{} test failed".format(date_datestart1, date_dateend)
+    assert indexpattern_generate(date_datestart2,date_dateend) == 'gracc.osg.query-2016.*', "Assertion Error, {}-{} test failed".format(date_datestart2, date_dateend)
+    assert indexpattern_generate(date_datestart3,date_dateend) == 'gracc.osg.query-*', "Assertion Error, {}-{} test failed".format(date_datestart3, date_dateend)
+    
+    assert indexpattern_generate(datestringslash,date_dateend) == 'gracc.osg.query-2016.06', "Assertion Error, {}-{} test failed".format(datestringslash, date_dateend)
+    assert indexpattern_generate(datestringdash,date_dateend) == 'gracc.osg.query-2016.06', "Assertion Error, {}-{} test failed".format(datestringslash, date_dateend)
     
     print "This next test should fail with a TypeError."
     print indexpattern_generate(datebreak,date_dateend)
