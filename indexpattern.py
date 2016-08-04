@@ -12,7 +12,7 @@ def dateparse(date):
             return date
         else:
             try:
-                date = datetime.date(*[int(elt) for elt in re.split('[/-]',date)])
+                date = datetime.date(*[int(elt) for elt in re.split('[/: -]',date)][:3])
                 continue        # Pass back to beginning of loop so datetime.date clause returns the date string
             except:
                 raise TypeError("The date must be a datetime.date object, a list in the form of [yyyy,mm,dd], or a date in the form of yyyy/mm/dd or yyyy-mm-dd")
@@ -61,6 +61,8 @@ if __name__=="__main__":
     datestringslash = '2016/06/10'
     datestringdash = '2016-06-10'
 
+    fulldate = '2016/06/10 12:34'
+
     datebreak = '20160205'
     
 # gracc.osg.query-YYYY.MM
@@ -77,6 +79,8 @@ if __name__=="__main__":
     assert indexpattern_generate(datestringslash,date_dateend) == 'gracc.osg.query-2016.06', "Assertion Error, {}-{} test failed".format(datestringslash, date_dateend)
     assert indexpattern_generate(datestringdash,date_dateend) == 'gracc.osg.query-2016.06', "Assertion Error, {}-{} test failed".format(datestringslash, date_dateend)
     
+    print dateparse(fulldate)
+
     print "This next test should fail with a TypeError."
     print indexpattern_generate(datebreak,date_dateend)
 
