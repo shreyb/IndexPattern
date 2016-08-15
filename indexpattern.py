@@ -12,7 +12,7 @@ def dateparse(date):
             return date
         else:
             try:
-                date = datetime.date(*[int(elt) for elt in re.split('[/-]', date)])
+                date = datetime.date(*[int(elt) for elt in re.split('[/: -]', date)][:3])
                 continue        # Pass back to beginning of loop so datetime.date clause returns the date string
             except:
                 raise TypeError("The date must be a datetime.date object, a list in the form of [yyyy,mm,dd], or a date in the form of yyyy/mm/dd or yyyy-mm-dd")
@@ -59,6 +59,8 @@ if __name__ == "__main__":
 
     datestringslash = '2016/06/10'
     datestringdash = '2016-06-10'
+
+    fulldate = '2016/06/10 12:34'
 
     datebreak = '20160205'
 
