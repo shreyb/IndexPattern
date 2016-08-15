@@ -20,7 +20,7 @@ def dateparse(date):
 
 def indexpattern_generate(start, end):
     """Function to return the proper index pattern for queries to elasticsearch on gracc.opensciencegrid.org.  This improves performance by not just using a general index pattern unless absolutely necessary.
-    This will especially help with reports, for example.i
+    This will especially help with reports, for example.
 
     This function assumes that the date being passed in has been split into a list with [yyyy,mm,dd] format.  This gets tested and cleaned up in the called dateparse function.
     """
