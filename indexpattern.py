@@ -27,7 +27,7 @@ def indexpattern_generate(start, end):
     startdate = dateparse(start)
     enddate = dateparse(end)
 
-    basepattern = 'gracc.osg.query-'
+    basepattern = 'gracc.osg.raw-'
 
     if startdate[0] == enddate[0]:                        # Check if year is the same
         basepattern += '{}.'.format(str(startdate[0]))
@@ -64,20 +64,20 @@ if __name__ == "__main__":
 
     datebreak = '20160205'
 
-    # gracc.osg.query-YYYY.MM
+    # gracc.osg.raw-YYYY.MM
 
-    assert indexpattern_generate(date_start1, date_end) == 'gracc.osg.query-2016.06', "Assertion Error, {}-{} test failed".format(date_start1, date_end)
-    assert indexpattern_generate(date_start2, date_end) == 'gracc.osg.query-2016.*', "Assertion Error, {}-{} test failed".format(date_start2, date_end)
-    assert indexpattern_generate(date_start3, date_end) == 'gracc.osg.query-*', "Assertion Error, {}-{} test failed".format(date_start3, date_end)
+    assert indexpattern_generate(date_start1, date_end) == 'gracc.osg.raw-2016.06', "Assertion Error, {}-{} test failed".format(date_start1, date_end)
+    assert indexpattern_generate(date_start2, date_end) == 'gracc.osg.raw-2016.*', "Assertion Error, {}-{} test failed".format(date_start2, date_end)
+    assert indexpattern_generate(date_start3, date_end) == 'gracc.osg.raw-*', "Assertion Error, {}-{} test failed".format(date_start3, date_end)
     print "Passed date array tests"
 
-    assert indexpattern_generate(date_datestart1, date_dateend) == 'gracc.osg.query-2016.06', "Assertion Error, {}-{} test failed".format(date_datestart1, date_dateend)
-    assert indexpattern_generate(date_datestart2, date_dateend) == 'gracc.osg.query-2016.*', "Assertion Error, {}-{} test failed".format(date_datestart2, date_dateend)
-    assert indexpattern_generate(date_datestart3, date_dateend) == 'gracc.osg.query-*', "Assertion Error, {}-{} test failed".format(date_datestart3, date_dateend)
+    assert indexpattern_generate(date_datestart1, date_dateend) == 'gracc.osg.raw-2016.06', "Assertion Error, {}-{} test failed".format(date_datestart1, date_dateend)
+    assert indexpattern_generate(date_datestart2, date_dateend) == 'gracc.osg.raw-2016.*', "Assertion Error, {}-{} test failed".format(date_datestart2, date_dateend)
+    assert indexpattern_generate(date_datestart3, date_dateend) == 'gracc.osg.raw-*', "Assertion Error, {}-{} test failed".format(date_datestart3, date_dateend)
     print "Passed datetime.date tests"
 
-    assert indexpattern_generate(datestringslash, date_dateend) == 'gracc.osg.query-2016.06', "Assertion Error, {}-{} test failed".format(datestringslash, date_dateend)
-    assert indexpattern_generate(datestringdash, date_dateend) == 'gracc.osg.query-2016.06', "Assertion Error, {}-{} test failed".format(datestringslash, date_dateend)
+    assert indexpattern_generate(datestringslash, date_dateend) == 'gracc.osg.raw-2016.06', "Assertion Error, {}-{} test failed".format(datestringslash, date_dateend)
+    assert indexpattern_generate(datestringdash, date_dateend) == 'gracc.osg.raw-2016.06', "Assertion Error, {}-{} test failed".format(datestringslash, date_dateend)
     print "Passed date string tests (/ and -)"
 
     print "This next test should fail with a TypeError."
