@@ -18,12 +18,15 @@ def dateparse(date):
                 raise TypeError("The date must be a datetime.date object, a list in the form of [yyyy,mm,dd], or a date in the form of yyyy/mm/dd or yyyy-mm-dd")
 
 
-def indexpattern_generate(start, end):
+def indexpattern_generate(start, end, raw=True):
     """Function to return the proper index pattern for queries to elasticsearch on gracc.opensciencegrid.org.  This improves performance by not just using a general index pattern unless absolutely necessary.
     This will especially help with reports, for example.
 
     This function assumes that the date being passed in has been split into a list with [yyyy,mm,dd] format.  This gets tested and cleaned up in the called dateparse function.
     """
+    if not raw:
+        return 'gracc.osg.summary*'
+
     startdate = dateparse(start)
     enddate = dateparse(end)
 
