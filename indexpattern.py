@@ -3,19 +3,50 @@
 import datetime
 import re
 
-def dateparse(date):
-    """Function to make sure that our date is either a list, a datetime.date object or a date in the form of yyyy/mm/dd or yyyy-mm-dd"""
+def dateparse(date, time=False):
+    """Function to make sure that our date is either a list of form
+    [yyyy, mm, dd], a datetime.datetime object or a date in the form of
+    yyyy/mm/dd HH:MM:SS or yyyy-mm-dd HH:MM:SS"""
     while True:
-        if isinstance(date, datetime.date):
-            return [date.year, date.month, date.day]
+        if isinstance(date, datetime.datetime) or \
+                isinstance(date, datetime.date):
+            if time:
+                return [date.year, date.month, date.day, date.hour, date.minute, date.second]
+            if not time:
+                return [date.year, date.month, date.day]
         elif isinstance(date, list):
             return date
         else:
             try:
-                date = datetime.date(*[int(elt) for elt in re.split('[/: -]', date)][:3])
+                if time:
+                    slashpattern_time = re.compile(
+                        '(\d{4})/(\d{2})/(\d{2})\s(\d{2}):(\d{2}):(\d{2})')
+                    dashpattern_time = re.compile(
+                        '(\d{4})-(\d{2})-(\d{2})\s(\d{2}):(\d{2}):(\d{2})')
+                    for pattern in [slashpattern_time, dashpattern_time]:
+                        match = pattern.match(date)
+                        if match:
+                            break
+                else:
+                    slashpattern = re.compile('(\d{4})/(\d{2})/(\d{2})')
+                    dashpattern = re.compile('(\d{4})-(\d{2})-(\d{2})')
+                    for pattern in [slashpattern, dashpattern]:
+                        match = pattern.match(date)
+                        if match:
+                            break
+
+                if match:
+                    date = datetime.datetime(
+                        *[int(elt) for elt in match.groups()])
+                else:
+                    raise
                 continue        # Pass back to beginning of loop so datetime.date clause returns the date string
             except:
-                raise TypeError("The date must be a datetime.date object, a list in the form of [yyyy,mm,dd], or a date in the form of yyyy/mm/dd or yyyy-mm-dd")
+                raise TypeError(
+                    "The date must be a datetime.date object, a list in the "
+                    "form of [yyyy,mm,dd], or a date in the form of yyyy/mm/dd "
+                    "or yyyy-mm-dd or datetime in the form yyyy/mm/dd HH:MM:SS"
+                    "or yyyy-mm-dd HH:MM:SS")
 
 
 def indexpattern_generate(start, end, raw=True):
@@ -56,14 +87,14 @@ if __name__ == "__main__":
     date_start3 = ['2015', '06', '10']
 
     date_dateend = datetime.date(2016, 06, 12)
-    date_datestart1 = datetime.date(2016, 06, 10)
+    date_datestart1 = datetime.datetime(2016, 06, 10)
     date_datestart2 = datetime.date(2016, 5, 10)
     date_datestart3 = datetime.date(2015, 05, 10)
 
     datestringslash = '2016/06/10'
     datestringdash = '2016-06-10'
 
-    fulldate = '2016/06/10 12:34'
+    fulldate = '2016/06/10 12:34:00'
 
     datebreak = '20160205'
 
@@ -82,6 +113,10 @@ if __name__ == "__main__":
     assert indexpattern_generate(datestringslash, date_dateend) == 'gracc.osg.raw-2016.06', "Assertion Error, {0}-{1} test failed".format(datestringslash, date_dateend)
     assert indexpattern_generate(datestringdash, date_dateend) == 'gracc.osg.raw-2016.06', "Assertion Error, {0}-{1} test failed".format(datestringslash, date_dateend)
     print "Passed date string tests (/ and -)"
+
+    dateparse_fulldate = dateparse(fulldate,time=True)
+    assert indexpattern_generate(dateparse_fulldate, date_dateend) == 'gracc.osg.raw-2016.06', "Assertion Error, {0}-{1} test failed".format(datestringslash, date_dateend)
+    print "Passed full date time test"
 
     print "This next test should fail with a TypeError."
     try:
