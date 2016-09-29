@@ -6,7 +6,17 @@ import re
 def dateparse(date, time=False):
     """Function to make sure that our date is either a list of form
     [yyyy, mm, dd], a datetime.datetime object or a date in the form of
-    yyyy/mm/dd HH:MM:SS or yyyy-mm-dd HH:MM:SS"""
+    yyyy/mm/dd HH:MM:SS or yyyy-mm-dd HH:MM:SS
+
+    Arguments:
+        time (bool):  if True, then we are passing in a date/time, and want to
+        return the date and time.  If False (default), we can pass in either
+        a date or a date/time, but we only want to return a date
+
+    Returns:
+        List of date elements in [yyyy,mm,dd] form or list of datetime elements
+        in [yyyy,mm,dd,HH,MM,SS] form
+    """
     while True:
         if isinstance(date, datetime.datetime) or \
                 isinstance(date, datetime.date):
