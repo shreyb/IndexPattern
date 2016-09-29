@@ -3,6 +3,32 @@
 import datetime
 import re
 
+
+
+def datetimecheck(date):
+    """Checks to see if date is in the form yyyy/mm/dd HH:MM:SS or
+    yyyy-mm-dd HH:MM:SS.  We return the match object if it is, or else None"""
+    slashpattern_time = re.compile(
+        '(\d{4})/(\d{2})/(\d{2})\s(\d{2}):(\d{2}):(\d{2})')
+    dashpattern_time = re.compile(
+        '(\d{4})-(\d{2})-(\d{2})\s(\d{2}):(\d{2}):(\d{2})')
+    for pattern in [slashpattern_time, dashpattern_time]:
+        match = pattern.match(date)
+        if match:
+            break
+    return match
+
+def datecheck(date):
+    """Checks to see if date is in the form yyyy/mm/dd or yyyy-mm-dd.
+    We return the match object if it is, or else None"""
+    slashpattern = re.compile('(\d{4})/(\d{2})/(\d{2})')
+    dashpattern = re.compile('(\d{4})-(\d{2})-(\d{2})')
+    for pattern in [slashpattern, dashpattern]:
+        match = pattern.match(date)
+        if match:
+            break
+    return match
+
 def dateparse(date, time=False):
     """Function to make sure that our date is either a list of form
     [yyyy, mm, dd], a datetime.datetime object or a date in the form of
@@ -29,22 +55,11 @@ def dateparse(date, time=False):
         else:
             try:
                 if time:
-                    slashpattern_time = re.compile(
-                        '(\d{4})/(\d{2})/(\d{2})\s(\d{2}):(\d{2}):(\d{2})')
-                    dashpattern_time = re.compile(
-                        '(\d{4})-(\d{2})-(\d{2})\s(\d{2}):(\d{2}):(\d{2})')
-                    for pattern in [slashpattern_time, dashpattern_time]:
-                        match = pattern.match(date)
-                        if match:
-                            break
+                    match = datetimecheck(date)
+                    if not match:
+                        match = datecheck(date)
                 else:
-                    slashpattern = re.compile('(\d{4})/(\d{2})/(\d{2})')
-                    dashpattern = re.compile('(\d{4})-(\d{2})-(\d{2})')
-                    for pattern in [slashpattern, dashpattern]:
-                        match = pattern.match(date)
-                        if match:
-                            break
-
+                    match = datecheck(date)
                 if match:
                     date = datetime.datetime(
                         *[int(elt) for elt in match.groups()])
@@ -56,7 +71,7 @@ def dateparse(date, time=False):
                     "The date must be a datetime.date object, a list in the "
                     "form of [yyyy,mm,dd], or a date in the form of yyyy/mm/dd "
                     "or yyyy-mm-dd or datetime in the form yyyy/mm/dd HH:MM:SS"
-                    "or yyyy-mm-dd HH:MM:SS")
+                    " or yyyy-mm-dd HH:MM:SS")
 
 
 def indexpattern_generate(start, end, raw=True):
